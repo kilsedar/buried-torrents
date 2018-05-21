@@ -320,7 +320,7 @@ function resize() {
 }
 
 function adjustLegendHeight(legendHeight) {
-  legendHeight = $("div#legend")[0].scrollHeight;
+  legendHeight = $("div#legend")[0].scrollHeight + 5;
   var mapH = $("#map").height();
 
   if (legendHeight > mapH) {
