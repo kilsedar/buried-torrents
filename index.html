@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web GIS</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="vendor/jquery-2.2.0.min.js"></script>
+  <link rel="stylesheet" href="vendor/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css"/>
+  <script src="vendor/jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <link rel="stylesheet" href="vendor/leaflet-0.7.3/leaflet.css"/>
+  <script src="vendor/leaflet-0.7.3/leaflet.js"></script>
+  <script src="vendor/leaflet-plugins-1.2.1/layer/tile/Bing.js"></script>
+  <script src="data/main-watercourses.js" type="text/javascript"></script>
+  <script src="data/buried-channels.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="main.css"/>
+</head>
+<body onresize="resize()">
+  <div id="map">
+    <div id="runoff-legend"></div>
+    <div id="logo"></div>
+  </div>
+
+  <div id="legend-icon"><img src="data/icons/legend-close-small.png"></img></div>
+  <div id="legend">
+    <form>
+      <input id="bing" type="radio" name="basemap" data-role="none" checked><label for="bing" class="label-radio"> Bing Aerial</label><br>
+      <input id="osm" type="radio" name="basemap" data-role="none"><label for="osm" class="label-radio"> OpenStreetMap</label><br>
+      <input id="osm-cycle" type="radio" name="basemap" data-role="none"><label for="osm-cycle" class="label-radio"> OpenStreetMap - OpenCycleMap</label><br>
+      <input id="osm-outdoors" type="radio" name="basemap" data-role="none"><label for="osm-outdoors" class="label-radio"> OpenStreetMap - Outdoors</label><br>
+      <input id="osm-watercolor" type="radio" name="basemap" data-role="none"><label for="osm-watercolor" class="label-radio"> OpenStreetMap - Stamen Watercolor</label><br>
+      <input id="osm-toner" type="radio" name="basemap" data-role="none"><label for="osm-toner" class="label-radio"> OpenStreetMap - Stamen Toner</label><br>
+    </form>
+
+    <hr width="280" noshade>
+
+    <p>Base Layers</p>
+    <div class="legend-div">
+      <label class="checkbox-label"><input id="lake" type="checkbox" checked><image src="data/icons/lago.png"/><p class="legend-text">Como Lake</p></input></label>
+      <label class="checkbox-label"><input id="railway" type="checkbox"><image src="data/icons/area-ferroviaria.png"/><p class="legend-text">Railway Area</p></input></label>
+      <label class="checkbox-label"><input id="vehicular" type="checkbox"><image src="data/icons/area-stradale.png"/><p class="legend-text">Vehicular Area</p></input></label>
+      <label class="checkbox-label"><input id="buildings" type="checkbox"><image src="data/icons/area-edificio.png"/><p class="legend-text">Buildings</p></input></label>
+    </div>
+    <br>
+
+    <p>Watercourses</p>
+    <div class="legend-div">
+      <label class="checkbox-label"><input id="main" type="checkbox" checked><image src="data/icons/reticolo-principale-wgs.png"/><p class="legend-text">Main Watercourses</p></input></label>
+      <label class="checkbox-label"><input id="buried" type="checkbox" checked><image src="data/icons/fiumi-coperti.png"/><p class="legend-text">Buried Channels</p></input></label>
+    </div>
+    <br>
+
+    <p>Valduce Watershed</p>
+    <div class="legend-div">
+      <label class="checkbox-label"><input id="gai-max-V" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (1955)</p></input></label>
+      <div id="div-slider-leg-trans-1">
+        <input type="range" id="slider-leg-trans-1" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="dusaf1-max-V" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (1999)</p></input></label>
+      <div id="div-slider-leg-trans-2">
+        <input type="range" id="slider-leg-trans-2" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="dusaf4-max-V" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (2012)</p></input></label>
+      <div id="div-slider-leg-trans-3">
+        <input type="range" id="slider-leg-trans-3" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="valduce-divide" type="checkbox"><image src="data/icons/bacino-line-valduce.png"/><p class="legend-text">Valduce Watershed Divide</p></input></label>
+      <label class="checkbox-label"><input id="valduce-area" type="checkbox"><image src="data/icons/bacino-polygon-valduce.png"/><p class="legend-text">Valduce Watershed Area</p></input></label>
+    </div>
+    <br>
+
+    <p>Cosia Watershed</p>
+    <div class="legend-div">
+      <label class="checkbox-label"><input id="gai-max-C" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (1955)</p></input></label>
+      <div id="div-slider-leg-trans-4">
+        <input type="range" id="slider-leg-trans-4" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="dusaf1-max-C" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (1999)</p></input></label>
+      <div id="div-slider-leg-trans-5">
+        <input type="range" id="slider-leg-trans-5" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="dusaf4-max-C" class="runoff" type="checkbox"><image src="data/icons/land-use.png"/><p class="legend-text">Soil Runoff Capacity (2012)</p></input></label>
+      <div id="div-slider-leg-trans-6">
+        <input type="range" id="slider-leg-trans-6" value="80" min="0" max="100" step="20" data-highlight="true">
+      </div>
+
+      <label class="checkbox-label"><input id="cosia-divide" type="checkbox"><image src="data/icons/bacino-line-cosia.png"/><p class="legend-text">Cosia Watershed Divide</p></input></label>
+      <label class="checkbox-label"><input id="cosia-area" type="checkbox"><image src="data/icons/bacino-polygon-cosia.png"/><p class="legend-text">Cosia Watershed Area</p></input></label>
+    </div>
+  </div>
+
+  <div id="close-trans"><img src="data/icons/trans-close.png"></img></div>
+
+  <div id="slider-trans-layer">
+    <div class="div-slider-layer" id="div-slider-layer-1">
+      <div id="layer-name-hist-1">Theresian Cadastre</div>
+      <br>
+      <input type="range" id="slider-layer-1" value="2" min="1" max="16" step="1" data-highlight="true">
+      <div class="slider-ticks">
+        <div class="tick tick-1"></div>
+        <div class="tick tick-2"></div>
+        <div class="tick tick-3"></div>
+        <div class="tick tick-4"></div>
+        <div class="tick tick-5"></div>
+        <div class="tick tick-6"></div>
+        <div class="tick tick-7"></div>
+        <div class="tick tick-8"></div>
+        <div class="tick tick-9"></div>
+        <div class="tick tick-10"></div>
+        <div class="tick tick-11"></div>
+        <div class="tick tick-12"></div>
+        <div class="tick tick-13"></div>
+        <div class="tick tick-14"></div>
+        <div class="tick tick-15"></div>
+        <div class="tick tick-16"></div>
+      </div>
+      <div class="slider-labels">
+        <div class="label label-1">1600</div>
+        <div class="label label-2">1722</div>
+        <div class="label label-3">1861</div>
+        <div class="label label-4">1884</div>
+        <div class="label label-5">1900</div>
+        <div class="label label-6">1903</div>
+        <div class="label label-7">1908</div>
+        <div class="label label-8">1916</div>
+        <div class="label label-9">1919</div>
+        <div class="label label-10">1937</div>
+        <div class="label label-11">1937</div>
+        <div class="label label-12">1937</div>
+        <div class="label label-13">1937</div>
+        <div class="label label-14">1952</div>
+        <div class="label label-15">1967</div>
+        <div class="label label-16">2001</div>
+      </div>
+    </div>
+
+    <div class="div-slider-trans" id="div-slider-trans-1">
+      <input type="range" id="slider-trans-1" value="80" min="0" max="100" step="20" data-highlight="true">
+    </div>
+
+    <div class="div-slider-layer" id="div-slider-layer-2">
+      <div id="layer-name-hist-2">Theresian Cadastre</div>
+      <br>
+      <input type="range" id="slider-layer-2" value="2" min="1" max="16" step="1" data-highlight="true">
+      <div class="slider-ticks">
+        <div class="tick tick-1"></div>
+        <div class="tick tick-2"></div>
+        <div class="tick tick-3"></div>
+        <div class="tick tick-4"></div>
+        <div class="tick tick-5"></div>
+        <div class="tick tick-6"></div>
+        <div class="tick tick-7"></div>
+        <div class="tick tick-8"></div>
+        <div class="tick tick-9"></div>
+        <div class="tick tick-10"></div>
+        <div class="tick tick-11"></div>
+        <div class="tick tick-12"></div>
+        <div class="tick tick-13"></div>
+        <div class="tick tick-14"></div>
+        <div class="tick tick-15"></div>
+        <div class="tick tick-16"></div>
+      </div>
+      <div class="slider-labels">
+        <div class="label label-1">1600</div>
+        <div class="label label-2">1722</div>
+        <div class="label label-3">1861</div>
+        <div class="label label-4">1884</div>
+        <div class="label label-5">1900</div>
+        <div class="label label-6">1903</div>
+        <div class="label label-7">1908</div>
+        <div class="label label-8">1916</div>
+        <div class="label label-9">1919</div>
+        <div class="label label-10">1937</div>
+        <div class="label label-11">1937</div>
+        <div class="label label-12">1937</div>
+        <div class="label label-13">1937</div>
+        <div class="label label-14">1952</div>
+        <div class="label label-15">1967</div>
+        <div class="label label-16">2001</div>
+      </div>
+    </div>
+
+    <div class="div-slider-trans" id="div-slider-trans-2">
+      <input type="range" id="slider-trans-2" value="80" min="0" max="100" step="20" data-highlight="true">
+    </div>
+  </div>
+  <script src="map.js"></script>
+</body>
+</html>
