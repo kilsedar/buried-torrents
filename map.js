@@ -10,9 +10,9 @@ L.control.attribution({position: "bottomleft"}).addTo(map);
 
 var osm = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"});
 
-var osmCycle = L.tileLayer("http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png", {attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"});
+var osmCycle = L.tileLayer("https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=9036e43230634a959fd6e3cfd6050c23", {attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"});
 
-var osmOutdoors = L.tileLayer("http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png", {attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"});
+var osmOutdoors = L.tileLayer("https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=9036e43230634a959fd6e3cfd6050c23", {attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>"});
 
 var osmWatercolor = L.tileLayer("http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png", {attribution: "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a> &mdash; Map data &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>", subdomains: "abcd"});
 
@@ -320,7 +320,7 @@ function resize() {
 }
 
 function adjustLegendHeight(legendHeight) {
-  legendHeight = $("div#legend")[0].scrollHeight + 5;
+  legendHeight = $("div#legend")[0].scrollHeight;
   var mapH = $("#map").height();
 
   if (legendHeight > mapH) {
@@ -422,7 +422,4 @@ $(document).ready(function() {
     logoImageMarginTop = window.innerHeight - 59 - 20;
     logoImage.style.marginTop = String(logoImageMarginTop) + "px";
   }
-
-  legendHeight = $("div#legend")[0].scrollHeight;
-  adjustLegendHeight(legendHeight);
 });
