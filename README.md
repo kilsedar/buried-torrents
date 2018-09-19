@@ -4,4 +4,4 @@ The Web GIS visualizes the MSc thesis work of Daniele Oxoli. The related researc
 
 The Web GIS is available at http://geomobile.como.polimi.it/buriedtorrents/.
 
-[buried_torrents](data/screenshot.png)
+![buried_torrents](data/screenshot.png)
